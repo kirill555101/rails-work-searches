@@ -1,0 +1,29 @@
+// Place all the styles related to the Organisation_Interaction controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+ol {
+    text-align: left; 
+    font-size: 15pt;
+}
+
+#table_add_worker {
+    margin: 0; 
+    padding-left: 0px; 
+    text-align: left;
+}
+
+.information_text {
+    font-size: 15pt; 
+    text-align: left; 
+    font-style: italic;
+}
+
+#table_add_worker tr {
+    text-align: center;
+    font-size: 15pt; 
+}
+
+td .exit:hover {
+    color: red;
+}

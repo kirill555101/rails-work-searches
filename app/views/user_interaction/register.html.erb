@@ -1,0 +1,91 @@
+<%= form_tag("/create_new_user", :method => "post") do %>
+    <table id="user">
+        <caption><h1>Регистрация нового пользователя</h1></caption>
+        <tr>
+            <td collspan="2"><a class="change" onclick="to_org()">Сменить аккаунт</a></td>
+        </tr>
+        <tr>
+            <td width="40%">Введите имя</td>
+            <td><%= text_field_tag :name, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td width="40%">Введите фамилию</td>
+            <td><%= text_field_tag :surname, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите email</td>
+            <td><%= email_field_tag :email, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите телефон</td>
+            <td><%= text_field_tag :phone, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите пароль</td>
+            <td><%= password_field_tag :password, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Повторите пароль</td>
+            <td><%= password_field_tag :another_password, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td><%= submit_tag "Зарегистрироваться", class: "success" %></td>
+            <td><span style="color: red;"><%= @error1 %></span></td>
+        </tr>
+        <tr style="font-style: italic;">
+            <td><span style="font-size: small;">Уже зарегистрированы?</span></td>
+            <td><a href="/login" style="font-size: small;">Войти</a></td>
+        </tr>
+        <!--<tr>
+            <td collspan="2"><%= hidden_field_tag :type, "user" %></td>
+        </tr>-->
+    </table>
+<% end %>
+
+<%= form_tag("/create_new_organisation", :method => "post") do %>
+    <table id="organisation" hidden>
+        <caption><h1>Регистрация новой организации</h1></caption>
+        <tr>
+            <td collspan="2"><a class="change" onclick="to_user()">Сменить аккаунт</a></td>
+        </tr>
+        <tr>
+            <td width="40%">Введите название</td>
+            <td><%= text_field_tag :name, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите email</td>
+            <td><%= email_field_tag :email, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите телефон</td>
+            <td><%= text_field_tag :phone, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите url сайта</td>
+            <td><%= text_field_tag :website_url, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите пароль</td>
+            <td><%= password_field_tag :password, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Повторите пароль</td>
+            <td><%= password_field_tag :another_password, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите описание</td>
+            <td><%= text_area_tag :description, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td><%= submit_tag "Зарегистрироваться", class: "success" %></td>
+            <td><span style="color: red;"><%= @error2 %></span></td>
+        </tr>
+        <tr style="font-style: italic;">
+            <td><span style="font-size: small;">Уже зарегистрированы?</span></td>
+            <td><a href="/login" style="font-size: small;">Войти</a></td>
+        </tr>
+        <!--<tr>
+            <td collspan="2"><%= hidden_field_tag :type, "organisation" %></td>
+        </tr>-->
+    </table>
+<% end %>

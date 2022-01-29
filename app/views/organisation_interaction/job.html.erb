@@ -1,0 +1,70 @@
+<h1><%= @job.name %></h1>
+<div style="text-align: left;">
+    <p style="font-size: 15pt;">Вернуться к организации <a href="/organisation/<%= @current_organisation.id %>"><%= @current_organisation.name %></a></p>
+    <p style="font-size: 15pt;">Дата создания вакансии - <%= @created_at %></p>
+    <p class="inf-header">Описание вакансии</p>
+    <p style="font-size: 15pt;"><%= @job.description %></p>
+    <p class="inf-header">Обязательные требования</a></p>
+</div>
+
+<ol id="need_to_do">
+    <% @need_to_do.each do |item|%>
+        <li><%= item %></li>
+    <% end %>
+</ol>
+
+<% if @account %>
+    <% if @user %>
+        <% unless @has_applied %>
+            <%= form_tag("/add_worker", :method => "post") do %>
+                <table id="table_add_worker">
+                    <caption style="text-align: left;"><h2>Расскажите нам о себе</h2></caption>
+                    <tr>
+                        <td collspan="2"><%= text_area_tag :summary, nil, style: "width:500px; height:150px; margin-right: 500px;" %></td>
+                    </tr>
+                    <tr>
+                        <td collspan="2"><%= hidden_field_tag :job_id, @job.id %></td>
+                    </tr>
+                    <tr>
+                        <td><%= submit_tag "Отправить", class: "success", style: "margin-right: 850px;" %></td>
+                        <td><span style="color: red;"><%= @error %></span></td>
+                    </tr>
+                </table>
+            <% end %>
+        <% else %>
+            <p class="information_text">Вы уже подали заявку на эту вакансию.</p>
+        <% end %>
+    <% elsif @has_access %>
+        <div style="text-align: left;">
+            <p class="inf-header">Список откликнувшихся пользователей</a></p>
+        </div>
+        <% if @users.length > 0 %>
+            <p style="text-align: left; font-size: 15pt;">Общее количество: <%= @users.length %></p>
+
+            <table id="table_add_worker" border="1" style="border-collapse: collapse;">
+                <tr>
+                    <td>Фамилия</td>
+                    <td>Имя</td>
+                    <td>Телефон</td>
+                    <td>Резюме</td>
+                </tr>
+                <% @users.each do |user| %>
+                    <tr>
+                        <td><%= user.surname %></td>
+                        <td><%= user.name %></td>
+                        <td><%= user.phone %></td>
+                        <td><a onclick="document.getElementById('summary_<%= user.id %>').hidden = false;">Подробнее</a></td>
+                    </tr>
+                    <tr id="summary_<%= user.id %>" hidden>
+                        <td colspan="3"><%= user.middles.find_by_job_id(@job.id).summary %></td>
+                        <td><a class="exit" onclick="document.getElementById('summary_<%= user.id %>').hidden = true;">Закрыть</a></td>
+                    </tr>
+                <% end %>
+            </table>
+        <% else %>
+            <p class="information_text">Пока никто не откликнулся на данную вакансию.</p>
+        <% end %>
+    <% end %>
+<% elsif %>
+    <p style="font-size: 15pt; text-align: left;"><a href="/login">Войдите</a>, чтобы откликнуться на данную вакансию.</p>
+<% end %>

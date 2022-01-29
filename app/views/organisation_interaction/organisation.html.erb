@@ -1,0 +1,107 @@
+<script>
+    handleAjaxSuccess = function(event) {
+        [data, status, xhr] = event.detail;
+        show_job(data);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector("#add").addEventListener(
+        'ajax:success', handleAjaxSuccess)
+    })
+
+    function show_job(data)
+    {
+        if (!data.is_valid)
+        {
+            document.getElementById("error").innerText = "Проверьте правильность введенных данных";
+            return;
+        }
+        document.getElementById("error").innerText = "";
+
+        let parent = document.getElementById("inside");
+        let last_li = document.getElementById("li");
+        let name = document.getElementById("name").value;
+
+        let a = document.createElement("a");
+        let li_description = document.createElement("li");
+        let li_last = document.createElement("li");
+
+        a.href = "/job/" + data.id;
+        a.innerText = name;
+        li_description.innerText = data.description + "...";
+        li_description.style.cssText = "font-size: 14px;";
+        li_last.innerText = '\u00a0'; 
+        let li = document.createElement("li");
+        li.appendChild(a);
+
+        parent.insertBefore(li, last_li);
+        parent.insertBefore(li_description, last_li);
+        parent.insertBefore(li_last, last_li);
+
+        document.getElementById("name").value = "";
+        document.getElementById("need_to_do").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("jobs_count").innerText = 'Общее количество: ' + data.jobs_count;
+    }
+</script>
+
+<h1><%= @current_organisation.name %></h1>
+<div style="text-align: left;">
+    <p class="inf-header">Описание организации</p>
+    <p style="font-size: 15pt;"><%= @current_organisation.description %></p>
+    <p style="font-size: 15pt;">Сайт организации - <a href="<%= @current_organisation.website_url%>"><%= @current_organisation.website_url%></a></p>
+    <p style="font-size: 15pt;"> <span style="font-style: italic;">Остались вопросы?</span> Позвоните нам - <%= @current_organisation.phone %></p>
+    <p class="inf-header">Доступные вакансии</p>
+    <% if @jobs_count > 0 %>
+        <p style="text-align: left; font-size: 15pt;" id="jobs_count" >Общее количество: <%= @jobs_count %></p>
+    <% end %>
+</div>
+
+<div style="float: left;">
+    <ul class="menu" style="margin: 0;">
+        <ul id="inside">
+            <% if @current_organisation.jobs.length > 0 %>
+                <% @current_organisation.jobs.each do |job| %>
+                    <% if ((@today_date - Date.strptime(job.created_at.strftime('%m.%d.%Y'), '%m.%d.%Y')).to_i * 24) < 720 %>
+                        <li><a href="/job/<%= job.id %>" class="array"><%= job.name %></a></li>
+                        <li style="font-size: 14px;"><%= job.description.split.select.with_index {|element, index| index < 8 }.join(" ") %>...</li>
+                        <li>&nbsp;</li>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <li><a>Доступных вакансий нет!</a></li>
+            <% end %>
+            <% if @organisation && @has_access %>
+                <li id="li" onclick="show_job_creation()"><a> -- Добавить вакансию -- </a></li>
+            <% end %>
+        </ul>
+    </ul>
+    <% if @organisation %>
+        <%= form_with(url: "/create_job.json", method: "post", id: "add") do %>
+            <table id="job" hidden style="padding-left: 0px;">
+                <caption><h2>Добавление вакансии</h2></caption>
+                <tr>
+                    <td collspan="2"><a style="font-size: small; font-style: italic;" onclick="cancel_job_creation()">Отменить создание</a></td>
+                </tr>
+                <tr>
+                    <td>Введите название</td>
+                    <td><%= text_field_tag :name, nil, class: "enter" %></td>
+                </tr>
+                <tr>
+                    <td>Введите обязательные требования (через ";")</td>
+                    <td><%= text_area_tag :need_to_do, nil, class: "enter" %></td>
+                </tr>
+                <tr>
+                    <td>Введите описание</td>
+                    <td><%= text_area_tag :description, nil, class: "enter" %></td>
+                </tr>
+                <tr>
+                    <td><%= submit_tag "Добавить", class: "success" %></td>
+                    <td><span id="error" style="color: red;"><%= @error %></span></td>
+                </tr>
+            </table>
+        <% end %>
+    <% end %>
+    <br>
+</div>
+

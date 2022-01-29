@@ -1,0 +1,21 @@
+<%= form_tag("/auth", :method => "post") do %>
+    <table>
+        <caption><h1>Вход</h1></caption>
+        <tr>
+            <td width="40%">Введите почту</td>
+            <td><%= text_field_tag :email, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td>Введите пароль</td>
+            <td><%= password_field_tag :password, nil, class: "enter" %></td>
+        </tr>
+        <tr>
+            <td><%= submit_tag "Войти", class: "success" %></td>
+            <td><span style="color: red;"><%= @error %></span></td>
+        </tr>
+        <tr style="font-style: italic; font-size: medium;">
+            <td><span style="font-size: small;">Еще не зарегистрированы?</span></td>
+            <td><a href="/register" style="font-size: small;">Зарегистрироваться</a></td>
+        </tr>
+    </table>
+<% end %>

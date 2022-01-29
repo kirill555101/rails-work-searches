@@ -1,0 +1,33 @@
+// Place all the styles related to the User_Interaction controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#user-information a {
+    border: 1px solid #333;
+    display: inline-block;
+    padding: 2px 10px;
+    color: black;
+}
+
+#user-information a:hover {
+    color: white;
+    background-color: rgb(81, 206, 255);
+}
+
+.success {
+    border: 1px solid #333;
+    display: inline-block;
+    padding: 5px 40px;
+    color: white;
+    background-color: green;
+}
+
+.success:hover {
+    background-color: yellowgreen
+}
+
+.change {
+    font-size: small; 
+    font-style: italic; 
+    cursor: pointer;
+}
